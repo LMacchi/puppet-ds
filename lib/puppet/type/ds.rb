@@ -1,4 +1,4 @@
-Puppet::Type.newtype(ds) do
+Puppet::Type.newtype(:ds) do
   @doc = 'This type provides Puppet with the capabilities to manage directory service in Puppet Enterprise'
 
   ensurable
