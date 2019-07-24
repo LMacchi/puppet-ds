@@ -12,26 +12,19 @@ Puppet::Type.type(:ds).provide(:ruby) do
     end
   end
 
-  def self.prefetch(resources)
-    instances.each do |provider|
-      resource = resources[provider.name]
-      resource.provider = provider if resource
-    end
-  end
-
   def exists?
     @property_hash[:ensure] == :present
   end
 
   def create
     req_params = [:display_name, :hostname, :port, :login, :password, :base_dn, :user_lookup_attr, :user_email_attr, :user_display_name_attr]
-    req_params.insert(:user_rdn, :group_object_class, :group_member_attr, :group_name_attr, :group_lookup_attr, :group_rdn)
+    req_params.concat [:user_rdn, :group_object_class, :group_member_attr, :group_name_attr, :group_lookup_attr, :group_rdn]
     req_params.each do |param|
       raise Puppet::Error, "Parameter #{param} is mandatory" if resource[param].nil?
     end
     
     opt_params = [:help_link, :connect_timeout, :ssl, :start_tls, :ssl_hostname_validation, :ssl_wildcard_validation]
-    opt_params.insert(:disable_ldap_matching_rule_in_chain, :search_nested_groups)
+    opt_params.concat [:disable_ldap_matching_rule_in_chain, :search_nested_groups]
 
     params = req_params.concat(opt_params)
 

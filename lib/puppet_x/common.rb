@@ -40,7 +40,7 @@ module PuppetX
                   Net::HTTP::Get.new(uri.request_uri)
                 end
 
-      Puppet.debug("Sending #{type.upcase} request to #{url}")
+      Puppet.debug("Sending #{type.upcase} request to #{ds_url}")
 
       request.set_form_data(data) unless data.nil?
 
