@@ -1,28 +1,27 @@
 module PuppetX
   module Common
     def self.ds_url
-      Puppet.initialize_settings
       "https://#{Puppet.settings[:certname]}:4433/rbac-api/v1/ds"
     end
 
-    def self.get(ds_url, options = {})
-      request(url, :get, **options)
+    def self.get(options = {})
+      request(:get, **options)
     end
 
-    def self.post(ds_url, options = {})
-      request(url, :post, **options)
+    def self.post(options = {})
+      request(:post, **options)
     end
 
-    def self.put(ds_url, options = {})
-      request(url, :put, **options)
+    def self.put(options = {})
+      request(:put, **options)
     end
 
-    def self.delete(ds_url, options = {})
-      request(url, :delete, **options)
+    def self.delete(options = {})
+      request(:delete, **options)
     end
 
-    def self.request(url, type, data: nil)
-      uri = URI(url)
+    def self.request(type, data: nil)
+      uri = URI(ds_url)
       http = Net::HTTP.new(uri.host, uri.port)
       http.use_ssl = true
       http.cert = OpenSSL::X509::Certificate.new(File.read(Puppet.settings[:hostcert]))
